@@ -1,0 +1,368 @@
+{% extends 'base.html' %}
+{% block title %}Parking list{% endblock %}
+{% block content %}
+
+<div style="text-align: center;">
+    <form class="form-inline" id="toolbar">
+  <div class="form-group">
+    <label for="ccode">License Plate:</label>
+    <input type="text" class="form-control" id="ccode" placeholder="License Plate">
+  </div>
+  <button type="button" class="search btn btn-primary">Search</button>
+</form>
+ </div>
+    <div style="width: 80%;margin: 0 auto">
+
+    <table id="park" ></table>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel" style="text-align: center">
+					Drive away
+				</h4>
+			</div>
+			<div class="modal-body">
+			  <form class="form-horizontal" role="form" id="add-key-form" >
+                <div class="form-group">
+                     <label class="col-sm-3 control-label">Parking Lot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="areacode1" name="areacode1" placeholder="Parking Lot" readonly>
+                  </div>
+                    <label class="col-sm-3 control-label">Parking Spot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="pcode1" name="pcode1" placeholder="Parking Spot" readonly>
+                  </div>
+                    <label class="col-sm-3 control-label">License Plate</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="ccode1" name="ccode1" placeholder="License Plate" readonly>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default quxiao" data-dismiss="modal">Close
+                </button>
+                <button type="button" id="subModal1"  class="btn btn-primary queding">Leave</button>
+                </div>
+              </form>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel2" style="text-align: center">
+					Park
+				</h4>
+			</div>
+			<div class="modal-body">
+			  <form class="form-horizontal" role="form" id="add-key-form2" >
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Parking Lot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="areacode2" name="areacode2" placeholder="Parking Lot" readonly>
+                  </div>
+                    <label class="col-sm-3 control-label">Parking Spot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="pcode2" name="pcode2" placeholder="Parking Spot" readonly>
+                  </div>
+                  <label class="col-sm-3 control-label">License Plate </label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="ccode2" name="ccode2" placeholder="License Plate">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"    class="btn btn-default quxiao" >Close
+                </button>
+                <button type="button" id="subModal2" class="btn btn-primary queding">Save</button>
+                </div>
+              </form>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel3" style="text-align: center">
+					Change Park Spot
+				</h4>
+			</div>
+			<div class="modal-body">
+			  <form class="form-horizontal" role="form" id="add-key-form3" >
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Parking Lot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="areacode3" name="areacode3" placeholder="Parking Lot" readonly>
+                  </div>
+                  <label class="col-sm-3 control-label">License Plate </label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="ccode3" name="ccode3" placeholder="License Plate" readonly>
+                  </div>
+                  <label class="col-sm-3 control-label">Old Parking Spot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="opcode3" name="opcode3" placeholder="Old Parking Spot" readonly>
+                  </div>
+                  <label class="col-sm-3 control-label">New Parking Spot</label>
+                  <div class="col-sm-9">
+                     <input type="text" class="form-control" id="npcode3" name="npcode3" placeholder="New Parking Spot"/>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-default quxiao" data-dismiss="modal">Close
+                </button>
+                <button  type="button" id="subModal3" class="btn btn-primary queding">Save</button>
+                </div>
+              </form>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#park').bootstrapTable({
+            url: '/parkjson',
+            dataType: "json",
+            contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+            pagination: true,
+            singleSelect: false,
+            // search: true,
+            toolbar: '#toolbar',
+            striped: true,
+            cache: false,
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 20, 50, 100],
+            queryParams: function queryParams(params){
+            var param = {
+                 offset: params.offset,
+                 limit: params.limit,
+                 ccode: $("#ccode").val(),
+
+             };
+             return param;
+        },
+            strictSearch: true,
+            // showColumns: true,
+            // showRefresh: true,
+            minimumCountColumns: 2,
+            clickToSelect: true,
+            uniqueId: "id",
+            // showToggle: true,
+            cardView: false,
+            sidePagination: "server",
+            columns: [{
+                field: 'id',
+                title: 'No.',
+                align: 'center',
+
+            }, {
+                field: 'areacode',
+                title: 'Parking Lot Number',
+                align: 'center'
+            }, {
+                field: 'area',
+                title: 'Parking Lot Location',
+                align: 'center'
+            }, {
+                field: 'parkcode',
+                title: 'Parking Spot Number',
+                align: 'center',
+
+            },{
+                field: 'vchiclecode',
+                title: 'Licence Plate',
+                align: 'center',
+
+            },{
+                field: 'allspot',
+                title: 'All Spot',
+                align: 'center',
+
+            },{
+                field: 'avaliable',
+                title: 'Available Spot',
+                align: 'center',
+
+            },{
+                title: 'Operation',
+                field: 'id',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    data=JSON.stringify(row)
+                    var e = '<a href="#"   onclick="release(\''+row.parkcode+'\''+','+'\''+row.vchiclecode+'\''+','+'\''+row.areacode+'\''+','+'\''+row.id+'\')">Release</a> ';
+                    var d = '<a href="#"  onclick="bus(\''+row.parkcode+'\''+','+'\''+row.vchiclecode+'\''+','+'\''+row.areacode+'\''+','+'\''+row.id+'\')">Park</a> ';
+                    var f = '<a href="#"  onclick="reload(\''+row.parkcode+'\''+','+'\''+row.vchiclecode+'\''+','+'\''+row.areacode+'\''+','+'\''+row.id+ '\')">Replace</a> ';
+                    // console.log(e+d+f)
+                    return e + d+f;
+                }
+            }
+            ],
+        });
+    })
+function release(parkcode,vchiclecode,areacode,id){
+    console.log(parkcode,vchiclecode)
+        $("#areacode1").val(areacode);
+        $("#pcode1").val(parkcode);
+        $("#ccode1").val(vchiclecode);
+        $('#myModal').modal();
+        $(function() {
+                    $("#subModal1").click(function () {
+                                  $.ajax({
+              url: "/park/release",
+              type: "post",
+               data: {
+                   "pcode1":$("#pcode1").val(),
+                    "ccode1":$("#ccode1").val(),
+                    "areacode1":$("#areacode1").val(),
+                   'id':id
+              },
+            success:function (data) {
+                  if (data.code==404){
+                      alert(data.msg)
+                  }
+                 $('#myModal').modal('hide');
+               $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+
+                 $('#park').bootstrapTable(('refresh'));
+              },
+              error:function(res){
+                   $('#myModal').modal('hide');
+                    $('.queding').off('click');
+                    // remove the event that drops the close button
+                    $('.quxiao').off();
+
+                  alert("check if the parameters are correct")
+                  $('#park').bootstrapTable(('refresh'));
+
+              }
+})
+                    })
+                     $('.quxiao,.close').click(function () {
+                    $('#myModal2').modal('hide');
+                   $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+               $('#park').bootstrapTable('refresh')
+                 })
+                })
+
+}
+function bus(parkcode,vchiclecode,areacode,id){
+      $("#areacode2").val(areacode);
+      $("#pcode2").val(parkcode);
+      $("#ccode2").val(vchiclecode);
+      $('#myModal2').modal();
+    $(function() {
+        $("#subModal2").click(function () {
+    $.ajax({
+              url: "/park/bus",
+              type: "post",
+               data: {
+                   "pcode2":$("#pcode2").val(),
+                    "ccode2":$("#ccode2").val(),
+                   "areacode2":$("#areacode2").val(),
+                   'id':id
+              },
+         success:function (data) {
+                  if(data.code==404){
+                      alert(data.msg)
+                  }
+                   $('#myModal2').modal('hide');
+                    $('.queding').off('click');
+                    // remove the event that drops the close button
+                    $('.quxiao').off();
+                 $('#park').bootstrapTable(('refresh'));
+
+              },
+              error:function(res){
+                   $('#myModal2').modal('hide');
+                   $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+                  alert("check if the parameters are correct")
+                  $('#park').bootstrapTable(('refresh'));
+
+              }
+})
+})
+         $('.quxiao,.close').click(function () {
+                    $('#myModal2').modal('hide');
+                   $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+               $('#park').bootstrapTable('refresh')
+         })
+                })
+}
+function reload(parkcode,vchiclecode,areacode,id){
+    $("#areacode3").val(areacode);
+    $("#opcode3").val(parkcode);
+    $("#ccode3").val(vchiclecode);
+   $('#myModal3').modal();
+    $(function() {
+                    $("#subModal3").click(function () {
+    $.ajax({
+              url: "/park/reload",
+              type: "post",
+               data:{
+                   "opcode3":$("#opcode3").val(),
+                   "npcode3":$("#npcode3").val(),
+                    "ccode3":$("#ccode3").val(),
+                   "areacode3":$("#areacode3").val(),
+                   'id':id
+              },
+         success:function (data) {
+                  console.log(data)
+                  if(data.code==404){
+                          alert(data.msg)
+                      }
+                   $('#myModal3').modal('hide');
+             $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+                $('#park').bootstrapTable(('refresh'));
+              },
+              error:function(res){
+                   $('#myModal3').modal('hide');
+                   $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+                  alert("check if the parameters are correct")
+                   $('#park').bootstrapTable(('refresh'));
+
+              }
+})
+})
+                 $('.quxiao .close').click(function () {
+                    console.log("close")
+                    $('#myModal2').modal('hide');
+                   $('.queding').off('click');
+                // remove the event that drops the close button
+                $('.quxiao').off();
+               $('#park').bootstrapTable('refresh')
+         })
+                })
+
+}
+       $('.search').click(function () {
+               $('#park').bootstrapTable('refresh')
+         })
+
+</script>
+
+{% endblock %}

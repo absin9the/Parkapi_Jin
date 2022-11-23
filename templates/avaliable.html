@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Parking list{% endblock %}
+{% block content %}
+
+<div style="text-align: center">
+    <h1>Current available parking spaces</h1>
+</div>
+<div style="width: 80%;margin: 0 auto">
+
+<table id="park" ></table>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#park').bootstrapTable({
+            url: '/api/park/avail',  // routing data source
+            dataType: "json",
+            contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+            pagination: true, // front-end processing paging
+            singleSelect: false,// is it a single choice only
+            // search: true, // show the search box
+            toolbar: '#toolbar',
+            striped: true,
+            cache: false, // whether use cache, default is true
+            pageNumber: 1, // initially load page
+            pageSize: 10,
+            pageList: [10, 20, 50, 100],
+            strictSearch: true,// enable full match search
+            // showColumns: true,
+            // showRefresh: true,
+            minimumCountColumns: 2, // when the number of columns is less than this value, the  drop-down box will be hidden
+            clickToSelect: true,
+            uniqueId: "id",
+            // showToggle: true,
+            cardView: false,
+            sidePagination: "server",
+            columns: [{
+                field: 'id',
+                title: 'No.',
+                align: 'center',
+
+            }, {
+                field: 'areacode',
+                title: 'Parking Lot Number',
+                align: 'center'
+            }, {
+                field: 'area',
+                title: 'Parking Lot Location',
+                align: 'center'
+            }, {
+                field: 'parkcode',
+                title: 'Parking Spot Number',
+                align: 'center',
+
+            },{
+                field: 'vchiclecode',
+                title: 'Licence Plate',
+                align: 'center',
+
+            },{
+                field: 'allspot',
+                title: 'All Spot',
+                align: 'center',
+
+            },{
+                field: 'avaliable',
+                title: 'Available Spot',
+                align: 'center',
+
+            }
+            ],
+        });
+    });
+
+
+</script>
+
+{% endblock %}

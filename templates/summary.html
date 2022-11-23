@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Parking list{% endblock %}
+{% block content %}
+
+<div style="text-align: center">
+    <h1>Overview</h1>
+</div>
+<div style="width: 80%;margin: 0 auto">
+
+<table id="park" ></table>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#park').bootstrapTable({
+            url: '/api/park/summary',
+            dataType: "json",
+            contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+            pagination: true,
+            singleSelect: false,
+            // search: true,
+            toolbar: '#toolbar',
+            striped: true,
+            cache: false,
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 20, 50, 100],
+            strictSearch: true,
+            // showColumns: true,
+            // showRefresh: true,
+            minimumCountColumns: 2,
+            clickToSelect: true,
+            uniqueId: "id",
+            // showToggle: true,
+            cardView: false,
+            sidePagination: "server",
+            columns: [{
+                field: 'areacode',
+                title: 'Parking Lot Number',
+                align: 'center'
+            }, {
+                field: 'area',
+                title: 'Parking Lot Location',
+                align: 'center'
+            },{
+                field: 'allspot',
+                title: 'All Spot',
+                align: 'center',
+
+            },{
+                field: 'avaliable',
+                title: 'Available Spot',
+                align: 'center',
+
+            }
+            ],
+        });
+    });
+
+
+</script>
+
+{% endblock %}

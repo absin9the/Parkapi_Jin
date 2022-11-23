@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}
+
+    {% endblock %}</title>
+
+<script src="/static/jquery-3.6.1.min.js"></script>
+<script src="/static/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/static/bootstrap-3.4.1-dist/css/bootstrap.min.css"  crossorigin="anonymous">
+
+<link rel="stylesheet" href="/static/bootstrap-3.4.1-dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+<script src="/static/dist/bootstrap-table.js"></script>
+<link rel="stylesheet" href="/static/dist/bootstrap-table.css">
+<script src="/static/dist/locale/bootstrap-table-zh-CN.js"></script>
+
+
+
+
+</head>
+<body>
+{# find a navigation bar from bootstrap #}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">PARK</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav nav-tabs">
+
+                <li><a  href="/park/summary">Overview</a></li>
+                <li><a  href="/park/avail">Available</a></li>
+                <li><a  href="/park/use">Occupied</a></li>
+                <li><a  href="/park">All</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {%  if not session['user'] %}
+                    <li><a href="{{url_for('login')}}">Login</a></li>
+                    <li><a href="{{url_for('register')}}">Create an account</a></li>
+                {% else %}
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"
+                       data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Current User:{{ session.user }}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout">Sign out</a></li>
+
+                    </ul>
+                    </li>
+            </ul>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+{# make every page available for flashing information #}
+{# flash messages can be multiple, so traverse and take out all #}
+{% for item in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        {{ item }}
+    </div>
+{% endfor %}
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

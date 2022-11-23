@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Login page{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-lg-4 col-lg-offset-4" style="margin-top: 50px">
+            <h1>
+                Login
+                <small>
+                    Not signed up yet?
+                    <a href="{{ url_for('register') }}">Create an account</a>
+                </small>
+
+            </h1>
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input name='username' type="text" class="form-control" id="username" placeholder="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input name='password' type="password" class="form-control" id="password"
+                           placeholder="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
